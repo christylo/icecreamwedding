@@ -1,1 +1,1 @@
-[RSVP](https://partiful.com/e/wRgDdHXKjVcnFKWIRWl9)
+Please [RSVP](https://partiful.com/e/wRgDdHXKjVcnFKWIRWl9)
