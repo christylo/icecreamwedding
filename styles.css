@@ -1,0 +1,194 @@
+:root {
+    --text-color: #000000;
+    --background: #ffffff;
+    --font-mono: 'Space Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: var(--background);
+    background-image: url('images/paper.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+body {
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    gap: 4rem;
+}
+
+.hero-images {
+    order: 2;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.hero-image {
+    width: 120px;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-image:first-child {
+    animation: float 3s ease-in-out infinite;
+}
+
+.couple-photo {
+    width: 240px;
+    animation: sideFloat 4s ease-in-out infinite;
+}
+
+.couple-photo img {
+    border-radius: 8px;
+}
+
+.us-map {
+    width: 150px;
+    animation: sideFloat 4s ease-in-out infinite;
+}
+
+.content {
+    text-align: left;
+    order: 1;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 4rem;
+    line-height: 1.4;
+}
+
+.tour-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.tour-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.city {
+    font-weight: 700;
+}
+
+.details, .rsvp-link {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.rsvp-link:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    font-size: 0.875rem;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes sideFloat {
+    0% {
+        transform: translateX(0px);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    main {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .hero-images {
+        order: 1;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-image {
+        width: 100px;
+    }
+
+    .couple-photo {
+        width: 200px;
+    }
+    
+    .us-map {
+        width: 120px;
+    }
+    
+    .content {
+        text-align: center;
+        order: 2;
+    }
+    
+    h1 {
+        font-size: 1.25rem;
+        margin-bottom: 3rem;
+    }
+    
+    .tour-dates {
+        gap: 1.5rem;
+    }
+} 
