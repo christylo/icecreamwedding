@@ -13,15 +13,22 @@
 <body>
     <div class="container">
         <main>
-            <div class="hero-images">
-                <div class="hero-image">
-                    <img src="images/icecream.jpg" alt="Melting vanilla ice cream cone">
+            <div class="image-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        <div class="carousel-slide">
+                            <img src="images/sf.png" alt="San Francisco">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/van.png" alt="Vancouver">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/tbd.png" alt="To Be Determined">
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-image couple-photo">
-                    <img src="images/us.png" alt="Photo of Christy and Jimmy">
-                </div>
+                <div class="swipe-text">← swipe →</div>
             </div>
-            
             <div class="content">
                 <h1>
                     <span class="names">CHRISTY & JIMMY</span>
@@ -62,5 +69,211 @@
             <p>© 2025 christy & jimmy</p>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const track = document.querySelector('.carousel-track');
+            const slides = document.querySelectorAll('.carousel-slide');
+            let currentIndex = 1; // Start at slide 2 (middle)
+            let isDragging = false;
+            let startPos = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let animationID = 0;
+            let autoScrollInterval;
+            let isHovering = false;
+            let shouldGoRight = true; // Simple flag to track direction
+
+            function updateCarousel(transition = true) {
+                const slideWidth = slides[0].offsetWidth + 10;
+                if (transition) {
+                    track.style.transition = 'transform 0.5s ease-out';
+                } else {
+                    track.style.transition = 'none';
+                }
+                track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function moveToNextSlide() {
+                if (currentIndex === 1) { // If on middle slide (2)
+                    if (shouldGoRight) {
+                        currentIndex = 2; // Go right
+                    } else {
+                        currentIndex = 0; // Go left
+                    }
+                    shouldGoRight = !shouldGoRight; // Toggle direction for next time
+                } else {
+                    currentIndex = 1; // Always go back to middle
+                }
+                updateCarousel();
+            }
+
+            function startAutoScroll() {
+                if (!isHovering && !isDragging) {
+                    autoScrollInterval = setInterval(() => {
+                        if (currentIndex === 1) { // If on middle slide (2)
+                            // Clear the current interval
+                            clearInterval(autoScrollInterval);
+                            // Set a new interval with a longer delay for the middle slide
+                            setTimeout(() => {
+                                moveToNextSlide();
+                                // Restart the normal interval
+                                startAutoScroll();
+                            }, 8000); // Pause for 8 seconds on middle slide
+                        } else {
+                            moveToNextSlide();
+                        }
+                    }, 6000); // Move to middle slide after 6 seconds
+                }
+            }
+
+            function stopAutoScroll() {
+                clearInterval(autoScrollInterval);
+            }
+
+            function nextSlide() {
+                moveToNextSlide();
+            }
+
+            function prevSlide() {
+                moveToNextSlide();
+            }
+
+            function goToSlide(index) {
+                currentIndex = index;
+                if (index === 1) { // If going to middle
+                    // Keep the same direction
+                } else if (index === 0) { // If going to left
+                    shouldGoRight = true; // Next time should go right
+                } else if (index === 2) { // If going to right
+                    shouldGoRight = false; // Next time should go left
+                }
+                updateCarousel();
+            }
+
+            // Mouse events
+            track.addEventListener('mousedown', dragStart);
+            window.addEventListener('mousemove', drag);
+            window.addEventListener('mouseup', dragEnd);
+            track.addEventListener('mouseleave', dragEnd);
+
+            // Touch events
+            track.addEventListener('touchstart', dragStart);
+            window.addEventListener('touchmove', drag);
+            window.addEventListener('touchend', dragEnd);
+
+            // Click and hover events for slides
+            slides.forEach((slide, index) => {
+                slide.addEventListener('click', () => {
+                    if (!isDragging) {
+                        // Stop current auto-scroll
+                        stopAutoScroll();
+                        // Go to clicked slide
+                        goToSlide(index);
+                        // Update direction based on which slide was clicked
+                        if (index === 0) { // If clicked left slide
+                            shouldGoRight = true; // Next move should be right
+                        } else if (index === 2) { // If clicked right slide
+                            shouldGoRight = false; // Next move should be left
+                        }
+                        // Restart auto-scroll after a longer delay
+                        setTimeout(() => {
+                            startAutoScroll();
+                        }, 4000); // Double the pause time to 4 seconds
+                    }
+                });
+
+                slide.addEventListener('mouseenter', () => {
+                    isHovering = true;
+                    stopAutoScroll();
+                });
+
+                slide.addEventListener('mouseleave', () => {
+                    isHovering = false;
+                    startAutoScroll();
+                });
+            });
+
+            function dragStart(event) {
+                isDragging = true;
+                startPos = getPositionX(event);
+                track.style.cursor = 'grabbing';
+                track.style.transition = 'none';
+                cancelAnimationFrame(animationID);
+                stopAutoScroll();
+            }
+
+            function drag(event) {
+                if (!isDragging) return;
+                
+                const currentPosition = getPositionX(event);
+                const diff = currentPosition - startPos;
+                const slideWidth = slides[0].offsetWidth + 10;
+                
+                // Calculate the new position with easing
+                let newTranslate = prevTranslate + diff;
+                
+                // Add resistance at the edges
+                if (currentIndex === 0 && newTranslate > 0) {
+                    newTranslate = newTranslate * 0.3;
+                }
+                if (currentIndex === 2 && newTranslate < 0) {
+                    newTranslate = newTranslate * 0.3;
+                }
+                
+                // Apply the transform with requestAnimationFrame for smooth animation
+                animationID = requestAnimationFrame(() => {
+                    track.style.transform = `translateX(${newTranslate}px)`;
+                });
+            }
+
+            function dragEnd(event) {
+                isDragging = false;
+                track.style.cursor = 'grab';
+                
+                const diff = getPositionX(event) - startPos;
+                const slideWidth = slides[0].offsetWidth + 10;
+                
+                // Calculate which slide we should be on based on the drag distance
+                const slideChange = Math.round(diff / slideWidth);
+                const newIndex = Math.max(0, Math.min(2, currentIndex - slideChange));
+                
+                // Update the current index and direction
+                currentIndex = newIndex;
+                if (newIndex === 0) {
+                    shouldGoRight = true;
+                } else if (newIndex === 2) {
+                    shouldGoRight = false;
+                }
+                
+                // Reset the transform to snap to the correct slide
+                const translate = -currentIndex * slideWidth;
+                track.style.transition = 'transform 0.3s ease-out';
+                track.style.transform = `translateX(${translate}px)`;
+                
+                // Stop auto-scroll when manually dragging
+                stopAutoScroll();
+                
+                // Only restart auto-scroll if we're not hovering
+                if (!isHovering) {
+                    setTimeout(() => {
+                        startAutoScroll();
+                    }, 2000);
+                }
+            }
+
+            function getPositionX(event) {
+                return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+            }
+
+            // Initialize carousel
+            updateCarousel(false);
+            track.style.cursor = 'grab';
+            startAutoScroll();
+        });
+    </script>
 </body>
 </html> 
