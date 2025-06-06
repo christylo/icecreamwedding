@@ -216,12 +216,12 @@
                 // Calculate the new position with easing
                 let newTranslate = prevTranslate + diff;
                 
-                // Add resistance at the edges
+                // Reduce resistance at the edges for better mobile experience
                 if (currentIndex === 0 && newTranslate > 0) {
-                    newTranslate = newTranslate * 0.3;
+                    newTranslate = newTranslate * 0.5;
                 }
                 if (currentIndex === 2 && newTranslate < 0) {
-                    newTranslate = newTranslate * 0.3;
+                    newTranslate = newTranslate * 0.5;
                 }
                 
                 // Apply the transform with requestAnimationFrame for smooth animation
@@ -238,7 +238,8 @@
                 const slideWidth = slides[0].offsetWidth + 10;
                 
                 // Calculate which slide we should be on based on the drag distance
-                const slideChange = Math.round(diff / slideWidth);
+                // Make it easier to trigger slide changes on mobile
+                const slideChange = Math.round(diff / (slideWidth * 0.3));
                 const newIndex = Math.max(0, Math.min(2, currentIndex - slideChange));
                 
                 // Update the current index and direction
