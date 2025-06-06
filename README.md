@@ -1,6 +1,7 @@
 # Ice Cream Wedding Website
 
 A simple and elegant wedding RSVP website hosted on GitHub Pages.
+https://christylo.github.io/icecreamwedding/
 
 ## Features
 - Clean and modern design
