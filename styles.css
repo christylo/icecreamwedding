@@ -560,8 +560,9 @@ footer {
     }
     
     .info-content p {
-        font-size: 0.85em;
-        padding: 0 0.75rem;
+        font-size: 0.8em;
+        padding: 0 1rem;
+        margin: 0.4rem 0;
     }
 }
 
@@ -580,8 +581,8 @@ footer {
     }
     
     .info-content p {
-        font-size: 0.8em;
-        margin: 0.4rem 0;
-        padding: 0 0.5rem;
+        font-size: 0.75em;
+        margin: 0.3rem 0;
+        padding: 0 1rem;
     }
 } 
