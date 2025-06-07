@@ -9,25 +9,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playlist+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
-    <div class="container">
+    <!-- <div class="container"> -->
         <main>
             <div class="image-carousel">
-                <div class="carousel-container">
-                    <div class="carousel-track">
-                        <div class="carousel-slide">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
                             <img src="images/sf.png" alt="San Francisco">
                         </div>
-                        <div class="carousel-slide">
+                        <div class="swiper-slide">
                             <img src="images/van.png" alt="Vancouver" class="vancouver-img">
                         </div>
-                        <div class="carousel-slide">
+                        <div class="swiper-slide">
                             <img src="images/tbd.png" alt="To Be Determined">
                         </div>
                     </div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="swipe-text">← swipe →</div>
+                <!-- <div class="swipe-text">← swipe →</div> -->
             </div>
             <div class="content">
                 <h1>
@@ -69,10 +71,11 @@
                             <img src="images/what_to_bring.png" alt="What to Bring" class="button-img">
                         </div>
                         <div class="info-content" style="display: none;">
-                            <p>• PLEASE DO NOT BRING GIFTS</p>
-                            <p>• Bring yourself and your smiles!</p>
+                            <p>• Comfortable walking shoes for exploring the city</p>
+                            <p>• Camera to capture sweet moments</p>
                             <p>• Appetite for delicious ice cream</p>
-                            <p>• Picnic blanket for seating</p>
+                            <p>• Weather-appropriate clothing</p>
+                            <p>• Small bag for any souvenirs</p>
                         </div>
                     </div>
 
@@ -82,9 +85,10 @@
                         </div>
                         <div class="info-content" style="display: none;">
                             <p>• Casual, comfortable attire</p>
-                            <p>• Boys it's time for your crochet tops to shine</p>
-                            <p>• Girls bring out those cute summer dresses</p>
-                            <p>• Comfortable shoes for standing on grass to yap</p>
+                            <p>• Light layers for changing weather</p>
+                            <p>• Sunglasses and hat for sunny days</p>
+                            <p>• Comfortable shoes for walking</p>
+                            <p>• Something you can easily move in</p>
                         </div>
                     </div>
 
@@ -93,12 +97,12 @@
                             <img src="images/faq.png" alt="FAQ" class="button-img">
                         </div>
                         <div class="info-content" style="display: none;">
-                            <p>Q: Can I bring a +1?</p>
-                            <p>A: Yes, as long as you RSVP them</p>
-                            <p>Q: Is this a wedding?</p>
-                            <p>A: We wanted to do something casual to celebrate instead of a wedding so sorta??</p>
-                            <p>Q: When will ice cream be served?</p>
-                            <p>A: Come on time please as ice cream will be ready promptly at the start and we don't want it to melt in the heat!</p>
+                            <p>Q: How long will each event last?</p>
+                            <p>A: Approximately 2-3 hours</p>
+                            <p>Q: Is there a dress code?</p>
+                            <p>A: Casual and comfortable</p>
+                            <p>Q: Can I bring guests?</p>
+                            <p>A: Please RSVP with your guest count</p>
                         </div>
                     </div>
                 </div>
@@ -108,298 +112,55 @@
         <footer>
             <p>© 2025 christy & jimmy</p>
         </footer>
-    </div>
+    <!-- </div> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const track = document.querySelector('.carousel-track');
-            const slides = document.querySelectorAll('.carousel-slide');
-            let currentIndex = 1; // Start at slide 2 (middle)
-            let isDragging = false;
-            let startPos = 0;
-            let currentTranslate = 0;
-            let prevTranslate = 0;
-            let animationID = 0;
-            let autoScrollInterval;
-            let isHovering = false;
-            let shouldGoRight = true;
-            let isTransitioning = false;
-
-            function updateCarousel(transition = true) {
-                const slideWidth = slides[0].offsetWidth + 10;
-                if (transition) {
-                    track.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                } else {
-                    track.style.transition = 'none';
-                }
-                track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-                
-                // Update active slide with a slight delay to ensure smooth transition
-                requestAnimationFrame(() => {
-                    slides.forEach((slide, index) => {
-                        // Force opacity update for all slides
-                        if (index === currentIndex) {
-                            slide.classList.add('active');
-                            slide.style.opacity = '1';
-                            // Force a reflow to ensure opacity is applied
-                            void slide.offsetWidth;
-                        } else {
-                            slide.classList.remove('active');
-                            slide.style.opacity = '0.5';
-                            // Force a reflow to ensure opacity is applied
-                            void slide.offsetWidth;
-                        }
-                    });
-                });
-            }
-
-            function moveToNextSlide() {
-                if (isTransitioning) return; // Prevent multiple transitions
-                isTransitioning = true;
-
-                // Ensure current slide is fully opaque before transition
-                slides.forEach((slide, index) => {
-                    slide.style.opacity = index === currentIndex ? '1' : '0.5';
-                });
-
-                if (currentIndex === 1) { // If on middle slide
-                    if (shouldGoRight) {
-                        currentIndex = 2; // Go right
-                    } else {
-                        currentIndex = 0; // Go left
-                    }
-                    shouldGoRight = !shouldGoRight; // Toggle direction for next time
-                } else {
-                    currentIndex = 1; // Always go back to middle
-                }
-                updateCarousel();
-
-                // Reset transition flag after animation completes
-                setTimeout(() => {
-                    isTransitioning = false;
-                    // Double-check opacity after transition
-                    slides.forEach((slide, index) => {
-                        slide.style.opacity = index === currentIndex ? '1' : '0.5';
-                        // Force a reflow to ensure opacity is applied
-                        void slide.offsetWidth;
-                    });
-                }, 800); // Match this with the transition duration
-            }
-
-            function startAutoScroll() {
-                if (!isHovering && !isDragging) {
-                    // Clear any existing interval first
-                    stopAutoScroll();
-                    
-                    // Start new interval
-                    autoScrollInterval = setInterval(() => {
-                        if (!isTransitioning) {
-                            moveToNextSlide();
-                        }
-                    }, 5000); // Consistent 5-second pause
-                }
-            }
-
-            function stopAutoScroll() {
-                if (autoScrollInterval) {
-                    clearInterval(autoScrollInterval);
-                    autoScrollInterval = null;
-                }
-            }
-
-            function nextSlide() {
-                moveToNextSlide();
-            }
-
-            function prevSlide() {
-                moveToNextSlide();
-            }
-
-            function goToSlide(index) {
-                currentIndex = index;
-                if (index === 1) { // If going to middle
-                    // Keep the same direction
-                } else if (index === 0) { // If going to left
-                    shouldGoRight = true; // Next time should go right
-                } else if (index === 2) { // If going to right
-                    shouldGoRight = false; // Next time should go left
-                }
-                updateCarousel();
-            }
-
-            // Mouse events
-            track.addEventListener('mousedown', dragStart);
-            window.addEventListener('mousemove', drag);
-            window.addEventListener('mouseup', dragEnd);
-            track.addEventListener('mouseleave', dragEnd);
-
-            // Touch events
-            track.addEventListener('touchstart', dragStart);
-            window.addEventListener('touchmove', drag);
-            window.addEventListener('touchend', dragEnd);
-
-            // Click and hover events for slides
-            slides.forEach((slide, index) => {
-                slide.addEventListener('click', () => {
-                    if (!isDragging) {
-                        // Stop current auto-scroll
-                        stopAutoScroll();
-                        // Go to clicked slide
-                        goToSlide(index);
-                        // Update direction based on which slide was clicked
-                        if (index === 0) { // If clicked left slide
-                            shouldGoRight = true; // Next move should be right
-                        } else if (index === 2) { // If clicked right slide
-                            shouldGoRight = false; // Next move should be left
-                        }
-                        // Restart auto-scroll after a longer delay
-                        setTimeout(() => {
-                            startAutoScroll();
-                        }, 4000); // Double the pause time to 4 seconds
-                    }
-                });
-
-                slide.addEventListener('mouseenter', () => {
-                    isHovering = true;
-                    stopAutoScroll();
-                });
-
-                slide.addEventListener('mouseleave', () => {
-                    isHovering = false;
-                    startAutoScroll();
-                });
-            });
-
-            function dragStart(event) {
-                isDragging = true;
-                startPos = getPositionX(event);
-                track.style.cursor = 'grabbing';
-                track.style.transition = 'none';
-                cancelAnimationFrame(animationID);
-                stopAutoScroll();
-            }
-
-            function drag(event) {
-                if (!isDragging) return;
-                
-                const currentPosition = getPositionX(event);
-                const diff = currentPosition - startPos;
-                const slideWidth = slides[0].offsetWidth + 10;
-                
-                // Calculate the new position with easing
-                let newTranslate = prevTranslate + diff;
-                
-                // Calculate which slide we're dragging towards
-                const dragIndex = Math.round(-newTranslate / slideWidth);
-                const targetIndex = Math.max(0, Math.min(2, dragIndex));
-                
-                // Update opacity of slides based on drag position
-                slides.forEach((slide, index) => {
-                    if (index === targetIndex) {
-                        slide.style.opacity = '1';
-                        slide.classList.add('active');
-                    } else {
-                        slide.style.opacity = '0.5';
-                        slide.classList.remove('active');
-                    }
-                });
-                
-                // Apply the transform with requestAnimationFrame for smooth animation
-                animationID = requestAnimationFrame(() => {
-                    track.style.transform = `translateX(${newTranslate}px)`;
-                });
-            }
-
-            function dragEnd(event) {
-                isDragging = false;
-                track.style.cursor = 'grab';
-                
-                const diff = getPositionX(event) - startPos;
-                const slideWidth = slides[0].offsetWidth + 10;
-                
-                // Determine direction of swipe and move one slide in that direction
-                let newIndex;
-                if (Math.abs(diff) > 10) { // Small threshold to detect intentional swipe
-                    if (diff > 0) { // Swiping right
-                        newIndex = Math.max(0, currentIndex - 1);
-                    } else { // Swiping left
-                        newIndex = Math.min(2, currentIndex + 1);
-                    }
-                } else {
-                    newIndex = currentIndex; // Stay on current slide if swipe is too small
-                }
-                
-                // Update the current index and direction
-                currentIndex = newIndex;
-                if (newIndex === 0) {
-                    shouldGoRight = true;
-                } else if (newIndex === 2) {
-                    shouldGoRight = false;
-                }
-                
-                // Reset the transform to snap to the correct slide
-                const translate = -currentIndex * slideWidth;
-                track.style.transition = 'transform 0.3s ease-out';
-                track.style.transform = `translateX(${translate}px)`;
-                
-                // Update opacity of final position
-                slides.forEach((slide, index) => {
-                    if (index === currentIndex) {
-                        slide.style.opacity = '1';
-                        slide.classList.add('active');
-                    } else {
-                        slide.style.opacity = '0.5';
-                        slide.classList.remove('active');
-                    }
-                });
-                
-                // Stop auto-scroll when manually dragging
-                stopAutoScroll();
-                
-                // Only restart auto-scroll if we're not hovering
-                if (!isHovering) {
-                    setTimeout(() => {
-                        startAutoScroll();
-                    }, 2000);
-                }
-            }
-
-            function getPositionX(event) {
-                return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-            }
-
-            // Initialize carousel
-            updateCarousel(false);
-            // Ensure initial state is correct
-            slides.forEach((slide, index) => {
-                slide.style.opacity = index === currentIndex ? '1' : '0.5';
-            });
-            track.style.cursor = 'grab';
-            startAutoScroll();
-
-            // Add touch event listeners specifically for mobile
-            track.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Prevent default touch behavior
-                isHovering = true;
-                stopAutoScroll();
-                dragStart(e);
-            }, { passive: false });
-
-            track.addEventListener('touchmove', (e) => {
-                e.preventDefault(); // Prevent default touch behavior
-                drag(e);
-            }, { passive: false });
-
-            track.addEventListener('touchend', (e) => {
-                e.preventDefault(); // Prevent default touch behavior
-                isHovering = false;
-                dragEnd(e);
-                setTimeout(() => {
-                    startAutoScroll();
-                }, 1000); // Wait a bit after touch ends before resuming
-            }, { passive: false });
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 3,
+            spaceBetween: 30,
+            initialSlide: 1,
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 0,
+                modifier: 1,
+                slideShadows: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            // autoplay: {
+            //     delay: 3000,
+            //     disableOnInteraction: false,
+            //     reverseDirection: false,
+            // },
+            // on: {
+            //     slideChange: function () {
+            //         // When reaching the last slide, reverse direction
+            //         if (this.activeIndex === 2) {
+            //             this.autoplay.stop();
+            //             setTimeout(() => {
+            //                 this.autoplay.start();
+            //                 this.params.autoplay.reverseDirection = true;
+            //             }, 100);
+            //         }
+            //         // When reaching the first slide, reverse direction again
+            //         if (this.activeIndex === 0) {
+            //             this.autoplay.stop();
+            //             setTimeout(() => {
+            //                 this.autoplay.start();
+            //                 this.params.autoplay.reverseDirection = false;
+            //             }, 100);
+            //         }
+            //     }
+            // }
         });
-    </script>
-    <script>
+
         // Info sections functionality
         function toggleInfo(element) {
             const content = element.nextElementSibling;
