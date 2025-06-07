@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,108 +12,106 @@
     <link href="https://fonts.googleapis.com/css2?family=Playlist+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
+
 <body>
-    <!-- <div class="container"> -->
-        <main>
-            <div class="image-carousel">
-                <div class="swiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="images/sf.png" alt="San Francisco">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/van.png" alt="Vancouver" class="vancouver-img">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="images/tbd.png" alt="To Be Determined">
-                        </div>
+    <main>
+        <div class="image-carousel">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="images/sf.png" alt="San Francisco">
                     </div>
-                    <!-- <div class="swiper-pagination"></div> -->
-                    <div class="swipe-text">← swipe →</div>
+                    <div class="swiper-slide">
+                        <img src="images/van.png" alt="Vancouver" class="vancouver-img">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/tbd.png" alt="To Be Determined">
+                    </div>
+                </div>
+                <div class="swipe-text">← swipe →</div>
+            </div>
+        </div>
+        <div class="content">
+            <h1>
+                <span class="names">CHRISTY & JIMMY'S</span>
+                <span class="subtitle">wedding ice cream tour</span>
+            </h1>
+
+            <div class="tour-dates">
+                <div class="tour-date">
+                    <div class="location">
+                        <span class="city">vancouver</span>
+                        <span class="date">aug 16, 2025</span>
+                    </div>
+                    <a href="https://partiful.com/e/wRgDdHXKjVcnFKWIRWl9" class="rsvp-link" target="_blank">
+                        rsvp →
+                    </a>
+                </div>
+
+                <div class="tour-date">
+                    <div class="location">
+                        <span class="city">san francisco</span>
+                        <span class="date">tbd</span>
+                    </div>
+                    <span class="details">coming soon</span>
+                </div>
+
+                <div class="tour-date">
+                    <div class="location">
+                        <span class="city">your city?</span>
+                        <span class="date">tbd</span>
+                    </div>
+                    <span class="details">coming soon</span>
                 </div>
             </div>
-            <div class="content">
-                <h1>
-                    <span class="names">CHRISTY & JIMMY'S</span>
-                    <span class="subtitle">wedding ice cream tour</span>
-                </h1>
-                
-                <div class="tour-dates">
-                    <div class="tour-date">
-                        <div class="location">
-                            <span class="city">vancouver</span>
-                            <span class="date">aug 16, 2025</span>
-                        </div>
-                        <a href="https://partiful.com/e/wRgDdHXKjVcnFKWIRWl9" class="rsvp-link" target="_blank">
-                            rsvp →
-                        </a>
-                    </div>
 
-                    <div class="tour-date">
-                        <div class="location">
-                            <span class="city">san francisco</span>
-                            <span class="date">tbd</span>
-                        </div>
-                        <span class="details">coming soon</span>
+            <div class="info-sections">
+                <div class="info-item">
+                    <div class="info-header" onclick="toggleInfo(this)">
+                        <img src="images/what_to_bring.png" alt="What to Bring" class="button-img">
                     </div>
-
-                    <div class="tour-date">
-                        <div class="location">
-                            <span class="city">your city?</span>
-                            <span class="date">tbd</span>
-                        </div>
-                        <span class="details">coming soon</span>
+                    <div class="info-content" style="display: none;">
+                        <p>• Comfortable walking shoes for exploring the city</p>
+                        <p>• Camera to capture sweet moments</p>
+                        <p>• Appetite for delicious ice cream</p>
+                        <p>• Weather-appropriate clothing</p>
+                        <p>• Small bag for any souvenirs</p>
                     </div>
                 </div>
 
-                <div class="info-sections">
-                    <div class="info-item">
-                        <div class="info-header" onclick="toggleInfo(this)">
-                            <img src="images/what_to_bring.png" alt="What to Bring" class="button-img">
-                        </div>
-                        <div class="info-content" style="display: none;">
-                            <p>• Comfortable walking shoes for exploring the city</p>
-                            <p>• Camera to capture sweet moments</p>
-                            <p>• Appetite for delicious ice cream</p>
-                            <p>• Weather-appropriate clothing</p>
-                            <p>• Small bag for any souvenirs</p>
-                        </div>
+                <div class="info-item">
+                    <div class="info-header" onclick="toggleInfo(this)">
+                        <img src="images/what_to_wear.png" alt="What to Wear" class="button-img">
                     </div>
-
-                    <div class="info-item">
-                        <div class="info-header" onclick="toggleInfo(this)">
-                            <img src="images/what_to_wear.png" alt="What to Wear" class="button-img">
-                        </div>
-                        <div class="info-content" style="display: none;">
-                            <p>• Casual, comfortable attire</p>
-                            <p>• Light layers for changing weather</p>
-                            <p>• Sunglasses and hat for sunny days</p>
-                            <p>• Comfortable shoes for walking</p>
-                            <p>• Something you can easily move in</p>
-                        </div>
+                    <div class="info-content" style="display: none;">
+                        <p>• Casual, comfortable attire</p>
+                        <p>• Light layers for changing weather</p>
+                        <p>• Sunglasses and hat for sunny days</p>
+                        <p>• Comfortable shoes for walking</p>
+                        <p>• Something you can easily move in</p>
                     </div>
+                </div>
 
-                    <div class="info-item">
-                        <div class="info-header" onclick="toggleInfo(this)">
-                            <img src="images/faq.png" alt="FAQ" class="button-img">
-                        </div>
-                        <div class="info-content" style="display: none;">
-                            <p>Q: How long will each event last?</p>
-                            <p>A: Approximately 2-3 hours</p>
-                            <p>Q: Is there a dress code?</p>
-                            <p>A: Casual and comfortable</p>
-                            <p>Q: Can I bring guests?</p>
-                            <p>A: Please RSVP with your guest count</p>
-                        </div>
+                <div class="info-item">
+                    <div class="info-header" onclick="toggleInfo(this)">
+                        <img src="images/faq.png" alt="FAQ" class="button-img">
+                    </div>
+                    <div class="info-content" style="display: none;">
+                        <p>Q: How long will each event last?</p>
+                        <p>A: Approximately 2-3 hours</p>
+                        <p>Q: Is there a dress code?</p>
+                        <p>A: Casual and comfortable</p>
+                        <p>Q: Can I bring guests?</p>
+                        <p>A: Please RSVP with your guest count</p>
                     </div>
                 </div>
             </div>
-        </main>
-        
-        <footer>
-            <p>© 2025 christy & jimmy</p>
-        </footer>
-    <!-- </div> -->
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 christy & jimmy</p>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         // Initialize Swiper
@@ -169,7 +168,7 @@
         // Info sections functionality
         function toggleInfo(element) {
             const content = element.nextElementSibling;
-            
+
             // Close all other sections
             document.querySelectorAll('.info-content').forEach(item => {
                 if (item !== content) {
@@ -177,7 +176,7 @@
                     item.classList.remove('active');
                 }
             });
-            
+
             // Toggle current section
             if (content.style.display === 'none') {
                 content.style.display = 'block';
@@ -193,5 +192,5 @@
         }
     </script>
 </body>
-</html> < ! - -   F o r c e   G i t H u b   P a g e s   r e b u i l d   - - >  
- 
+
+</html>
