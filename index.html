@@ -20,7 +20,7 @@
                             <img src="images/sf.png" alt="San Francisco">
                         </div>
                         <div class="carousel-slide">
-                            <img src="images/van.png" alt="Vancouver">
+                            <img src="images/van.png" alt="Vancouver" class="vancouver-img">
                         </div>
                         <div class="carousel-slide">
                             <img src="images/tbd.png" alt="To Be Determined">
@@ -31,7 +31,7 @@
             </div>
             <div class="content">
                 <h1>
-                    <span class="names">CHRISTY & JIMMY</span>
+                    <span class="names">CHRISTY & JIMMY'S</span>
                     <span class="subtitle">wedding ice cream tour</span>
                 </h1>
                 
@@ -56,10 +56,50 @@
 
                     <div class="tour-date">
                         <div class="location">
-                            <span class="city">toronto</span>
+                            <span class="city">your city?</span>
                             <span class="date">tbd</span>
                         </div>
                         <span class="details">coming soon</span>
+                    </div>
+                </div>
+
+                <div class="info-sections">
+                    <div class="info-item">
+                        <div class="info-header" onclick="toggleInfo(this)">
+                            <img src="images/what_to_bring.png" alt="What to Bring" class="button-img">
+                        </div>
+                        <div class="info-content" style="display: none;">
+                            <p>• PLEASE DO NOT BRING GIFTS</p>
+                            <p>• Bring yourself and your smiles!</p>
+                            <p>• Appetite for delicious ice cream</p>
+                            <p>• Picnic blanket for seating</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-header" onclick="toggleInfo(this)">
+                            <img src="images/what_to_wear.png" alt="What to Wear" class="button-img">
+                        </div>
+                        <div class="info-content" style="display: none;">
+                            <p>• Casual, comfortable attire</p>
+                            <p>• Boys it's time for your crochet tops to shine</p>
+                            <p>• Girls bring out those cute summer dresses</p>
+                            <p>• Comfortable shoes for standing on grass to yap</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-header" onclick="toggleInfo(this)">
+                            <img src="images/faq.png" alt="FAQ" class="button-img">
+                        </div>
+                        <div class="info-content" style="display: none;">
+                            <p>Q: Can I bring a +1?</p>
+                            <p>A: Yes, as long as you RSVP them</p>
+                            <p>Q: Is this a wedding?</p>
+                            <p>A: We wanted to do something casual to celebrate instead of a wedding so sorta??</p>
+                            <p>Q: When will ice cream be served?</p>
+                            <p>A: Come on time please as ice cream will be ready promptly at the start and we don't want it to melt in the heat!</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,24 +121,47 @@
             let animationID = 0;
             let autoScrollInterval;
             let isHovering = false;
-            let shouldGoRight = true; // Simple flag to track direction
+            let shouldGoRight = true;
+            let isTransitioning = false;
 
             function updateCarousel(transition = true) {
                 const slideWidth = slides[0].offsetWidth + 10;
                 if (transition) {
-                    track.style.transition = 'transform 0.5s ease-out';
+                    track.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
                 } else {
                     track.style.transition = 'none';
                 }
                 track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
                 
-                slides.forEach((slide, index) => {
-                    slide.classList.toggle('active', index === currentIndex);
+                // Update active slide with a slight delay to ensure smooth transition
+                requestAnimationFrame(() => {
+                    slides.forEach((slide, index) => {
+                        // Force opacity update for all slides
+                        if (index === currentIndex) {
+                            slide.classList.add('active');
+                            slide.style.opacity = '1';
+                            // Force a reflow to ensure opacity is applied
+                            void slide.offsetWidth;
+                        } else {
+                            slide.classList.remove('active');
+                            slide.style.opacity = '0.5';
+                            // Force a reflow to ensure opacity is applied
+                            void slide.offsetWidth;
+                        }
+                    });
                 });
             }
 
             function moveToNextSlide() {
-                if (currentIndex === 1) { // If on middle slide (2)
+                if (isTransitioning) return; // Prevent multiple transitions
+                isTransitioning = true;
+
+                // Ensure current slide is fully opaque before transition
+                slides.forEach((slide, index) => {
+                    slide.style.opacity = index === currentIndex ? '1' : '0.5';
+                });
+
+                if (currentIndex === 1) { // If on middle slide
                     if (shouldGoRight) {
                         currentIndex = 2; // Go right
                     } else {
@@ -109,29 +172,38 @@
                     currentIndex = 1; // Always go back to middle
                 }
                 updateCarousel();
+
+                // Reset transition flag after animation completes
+                setTimeout(() => {
+                    isTransitioning = false;
+                    // Double-check opacity after transition
+                    slides.forEach((slide, index) => {
+                        slide.style.opacity = index === currentIndex ? '1' : '0.5';
+                        // Force a reflow to ensure opacity is applied
+                        void slide.offsetWidth;
+                    });
+                }, 800); // Match this with the transition duration
             }
 
             function startAutoScroll() {
                 if (!isHovering && !isDragging) {
+                    // Clear any existing interval first
+                    stopAutoScroll();
+                    
+                    // Start new interval
                     autoScrollInterval = setInterval(() => {
-                        if (currentIndex === 1) { // If on middle slide (2)
-                            // Clear the current interval
-                            clearInterval(autoScrollInterval);
-                            // Set a new interval with a longer delay for the middle slide
-                            setTimeout(() => {
-                                moveToNextSlide();
-                                // Restart the normal interval
-                                startAutoScroll();
-                            }, 8000); // Pause for 8 seconds on middle slide
-                        } else {
+                        if (!isTransitioning) {
                             moveToNextSlide();
                         }
-                    }, 6000); // Move to middle slide after 6 seconds
+                    }, 5000); // Consistent 5-second pause
                 }
             }
 
             function stopAutoScroll() {
-                clearInterval(autoScrollInterval);
+                if (autoScrollInterval) {
+                    clearInterval(autoScrollInterval);
+                    autoScrollInterval = null;
+                }
             }
 
             function nextSlide() {
@@ -216,13 +288,20 @@
                 // Calculate the new position with easing
                 let newTranslate = prevTranslate + diff;
                 
-                // Reduce resistance at the edges for better mobile experience
-                if (currentIndex === 0 && newTranslate > 0) {
-                    newTranslate = newTranslate * 0.5;
-                }
-                if (currentIndex === 2 && newTranslate < 0) {
-                    newTranslate = newTranslate * 0.5;
-                }
+                // Calculate which slide we're dragging towards
+                const dragIndex = Math.round(-newTranslate / slideWidth);
+                const targetIndex = Math.max(0, Math.min(2, dragIndex));
+                
+                // Update opacity of slides based on drag position
+                slides.forEach((slide, index) => {
+                    if (index === targetIndex) {
+                        slide.style.opacity = '1';
+                        slide.classList.add('active');
+                    } else {
+                        slide.style.opacity = '0.5';
+                        slide.classList.remove('active');
+                    }
+                });
                 
                 // Apply the transform with requestAnimationFrame for smooth animation
                 animationID = requestAnimationFrame(() => {
@@ -237,10 +316,17 @@
                 const diff = getPositionX(event) - startPos;
                 const slideWidth = slides[0].offsetWidth + 10;
                 
-                // Calculate which slide we should be on based on the drag distance
-                // Make it easier to trigger slide changes on mobile
-                const slideChange = Math.round(diff / (slideWidth * 0.3));
-                const newIndex = Math.max(0, Math.min(2, currentIndex - slideChange));
+                // Determine direction of swipe and move one slide in that direction
+                let newIndex;
+                if (Math.abs(diff) > 10) { // Small threshold to detect intentional swipe
+                    if (diff > 0) { // Swiping right
+                        newIndex = Math.max(0, currentIndex - 1);
+                    } else { // Swiping left
+                        newIndex = Math.min(2, currentIndex + 1);
+                    }
+                } else {
+                    newIndex = currentIndex; // Stay on current slide if swipe is too small
+                }
                 
                 // Update the current index and direction
                 currentIndex = newIndex;
@@ -254,6 +340,17 @@
                 const translate = -currentIndex * slideWidth;
                 track.style.transition = 'transform 0.3s ease-out';
                 track.style.transform = `translateX(${translate}px)`;
+                
+                // Update opacity of final position
+                slides.forEach((slide, index) => {
+                    if (index === currentIndex) {
+                        slide.style.opacity = '1';
+                        slide.classList.add('active');
+                    } else {
+                        slide.style.opacity = '0.5';
+                        slide.classList.remove('active');
+                    }
+                });
                 
                 // Stop auto-scroll when manually dragging
                 stopAutoScroll();
@@ -272,9 +369,62 @@
 
             // Initialize carousel
             updateCarousel(false);
+            // Ensure initial state is correct
+            slides.forEach((slide, index) => {
+                slide.style.opacity = index === currentIndex ? '1' : '0.5';
+            });
             track.style.cursor = 'grab';
             startAutoScroll();
+
+            // Add touch event listeners specifically for mobile
+            track.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                isHovering = true;
+                stopAutoScroll();
+                dragStart(e);
+            }, { passive: false });
+
+            track.addEventListener('touchmove', (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                drag(e);
+            }, { passive: false });
+
+            track.addEventListener('touchend', (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                isHovering = false;
+                dragEnd(e);
+                setTimeout(() => {
+                    startAutoScroll();
+                }, 1000); // Wait a bit after touch ends before resuming
+            }, { passive: false });
         });
+    </script>
+    <script>
+        // Info sections functionality
+        function toggleInfo(element) {
+            const content = element.nextElementSibling;
+            
+            // Close all other sections
+            document.querySelectorAll('.info-content').forEach(item => {
+                if (item !== content) {
+                    item.style.display = 'none';
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Toggle current section
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                setTimeout(() => {
+                    content.classList.add('active');
+                }, 10);
+            } else {
+                content.classList.remove('active');
+                setTimeout(() => {
+                    content.style.display = 'none';
+                }, 300);
+            }
+        }
     </script>
 </body>
 </html> 
