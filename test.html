@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-carousel { background: #f0f0f0; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Test Page</h1>
+    <div class="test-carousel">
+        <p>This is a test to see if basic HTML renders the same</p>
+        <p>Current time: <span id="time"></span></p>
+    </div>
+    <script>
+        document.getElementById('time').textContent = new Date().toISOString();
+    </script>
+</body>
+</html> 

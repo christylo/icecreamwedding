@@ -28,7 +28,7 @@
                         <img src="images/tbd.png" alt="To Be Determined">
                     </div>
                 </div>
-                <!-- <div class="swipe-text">← swipe →</div> -->
+                <div class="swipe-text">← swipe →</div>
             </div>
         </div>
         <div class="content">
@@ -114,6 +114,15 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        console.log('Script loading...');
+        
+        // Check if Swiper is loaded
+        if (typeof Swiper === 'undefined') {
+            console.error('Swiper not loaded!');
+        } else {
+            console.log('Swiper loaded successfully');
+        }
+
         // Initialize Swiper
         const swiper = new Swiper('.swiper', {
             slidesPerView: 3,
