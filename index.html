@@ -117,48 +117,53 @@
     <script>
         // Initialize Swiper
         const swiper = new Swiper('.swiper', {
-            effect: 'coverflow',
-            grabCursor: true,
-            centeredSlides: true,
             slidesPerView: 3,
             spaceBetween: 30,
+            centeredSlides: true,
             initialSlide: 1,
-            coverflowEffect: {
-                rotate: 0,
-                stretch: 0,
-                depth: 0,
-                modifier: 1,
-                slideShadows: false,
-            },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
             },
-            // autoplay: {
-            //     delay: 3000,
-            //     disableOnInteraction: false,
-            //     reverseDirection: false,
-            // },
-            // on: {
-            //     slideChange: function () {
-            //         // When reaching the last slide, reverse direction
-            //         if (this.activeIndex === 2) {
-            //             this.autoplay.stop();
-            //             setTimeout(() => {
-            //                 this.autoplay.start();
-            //                 this.params.autoplay.reverseDirection = true;
-            //             }, 100);
-            //         }
-            //         // When reaching the first slide, reverse direction again
-            //         if (this.activeIndex === 0) {
-            //             this.autoplay.stop();
-            //             setTimeout(() => {
-            //                 this.autoplay.start();
-            //                 this.params.autoplay.reverseDirection = false;
-            //             }, 100);
-            //         }
-            //     }
-            // }
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                reverseDirection: false,
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 20
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                }
+            },
+            on: {
+                slideChange: function () {
+                    // When reaching the last slide, reverse direction
+                    if (this.activeIndex === 2) {
+                        this.autoplay.stop();
+                        setTimeout(() => {
+                            this.autoplay.start();
+                            this.params.autoplay.reverseDirection = true;
+                        }, 100);
+                    }
+                    // When reaching the first slide, reverse direction again
+                    if (this.activeIndex === 0) {
+                        this.autoplay.stop();
+                        setTimeout(() => {
+                            this.autoplay.start();
+                            this.params.autoplay.reverseDirection = false;
+                        }, 100);
+                    }
+                }
+            }
         });
 
         // Info sections functionality
