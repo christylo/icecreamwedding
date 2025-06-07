@@ -317,6 +317,47 @@ footer {
     width: 100%;
 }
 
+.swipe-text {
+    display: none; /* Hide by default */
+}
+
+/* Add swipe indicator for mobile */
+@media (max-width: 768px) {
+    .image-carousel {
+        position: relative;
+    }
+
+    .swipe-text {
+        display: block; /* Show only on mobile */
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        animation: pulse 2s infinite;
+        width: 100%;
+        position: absolute;
+        bottom: 10%; /* Position at 30% from bottom */
+        left: 0;
+        z-index: 1;
+        margin: 0;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Add text shadow for better visibility */
+    }
+
+    @keyframes pulse {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.5; }
+    }
+
+    .carousel-track {
+        cursor: grab;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .carousel-track:active {
+        cursor: grabbing;
+    }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     html {
